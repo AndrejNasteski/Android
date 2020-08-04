@@ -7,12 +7,20 @@
     tools:context=".HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.application.recyclerviewproject.MainActivity"
+        tools:ignore="UselessParent">
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home fragment"
-        android:textSize="30sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+
+    </RelativeLayout>
 
 
 </FrameLayout>

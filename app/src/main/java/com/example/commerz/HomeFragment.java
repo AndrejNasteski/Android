@@ -3,10 +3,14 @@ package com.example.commerz;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +18,14 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ArrayList<CardItem> exampleList;
+
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,6 +61,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -58,7 +73,31 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        exampleList = new ArrayList<>();
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
+
+
+
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new CardAdapter(exampleList);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+
+        return view;
     }
 }
