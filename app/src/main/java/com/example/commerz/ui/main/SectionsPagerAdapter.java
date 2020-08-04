@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.commerz.HomeFragment;
 import com.example.commerz.R;
 
 /**
@@ -35,10 +36,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 fragment = new ProfileFragment();
                 break;
             case 1:
-                fragment = new MyAdsFragment();
+                fragment = new HomeFragment();
                 break;
             case 2:
-                fragment = new FavoriteFragment();
+                fragment = new HomeFragment();
                 break;
         }
         return fragment;
