@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,15 +30,17 @@ public class LoginFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
 
     private EditText email;
     private EditText password;
+    private Button login_button;
+    private Button logout_button;
+    private TextView textView;
+
 
     public FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -57,8 +61,6 @@ public class LoginFragment extends Fragment {
     public static LoginFragment newInstance(String param1, String param2) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,25 +79,43 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         email = (EditText) view.findViewById(R.id.edit_text_email);
         password = (EditText) view.findViewById(R.id.edit_text_password);
-        Button login_button = (Button) view.findViewById(R.id.login_button);
+        login_button = (Button) view.findViewById(R.id.login_button);
+        logout_button = (Button) view.findViewById(R.id.logout_button);
+        textView = view.findViewById(R.id.text_click_login);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null){
+                if (firebaseAuth.getCurrentUser() != null) {
                     String uid = mAuth.getCurrentUser().getUid();
                     Toast.makeText(getContext(), uid, Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
                 }
             }
         };
 
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction f = getParentFragmentManager().beginTransaction();
+                f.addToBackStack(null);
+                f.replace(R.id.flMain, new RegisterFragment()).commit();
+            }
+        });
+
+
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startLogin();
+            }
+        });
+
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
             }
         });
 
