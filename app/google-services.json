@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "742315504964",
+    "firebase_url": "https://commerz-2ca14.firebaseio.com",
+    "project_id": "commerz-2ca14",
+    "storage_bucket": "commerz-2ca14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742315504964:android:beae041d6320273c86d311",
+        "android_client_info": {
+          "package_name": "com.example.commerz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742315504964-gpfu5e3c6j3sg3sa4crnpqona00uf3g1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1DH5vAfnCytOnncE6EnQaAd758H77mro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742315504964-gpfu5e3c6j3sg3sa4crnpqona00uf3g1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
