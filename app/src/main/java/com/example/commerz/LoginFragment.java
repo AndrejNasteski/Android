@@ -1,11 +1,6 @@
 package com.example.commerz;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,8 +66,8 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth= FirebaseAuth.getInstance();
-
+        mAuth = FirebaseAuth.getInstance();
+        MainActivity.loggedIn = mAuth.getCurrentUser() != null;
     }
 
     @Override
@@ -116,6 +114,8 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
+                MainActivity.loggedIn = mAuth.getCurrentUser() != null;
+                Toast.makeText(getContext(), "You are now logged out", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -136,14 +136,17 @@ public class LoginFragment extends Fragment {
             mAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        Toast.makeText(getContext(), "Braos", Toast.LENGTH_SHORT).show();
+                    if(task.isSuccessful()) {
+                        FragmentTransaction f = getParentFragmentManager().beginTransaction();
+                        MainActivity.loggedIn = mAuth.getCurrentUser() != null;
+                        f.replace(R.id.flMain, new HomeFragment()).commit();
+                        Toast.makeText(getContext(), "You are now logged in.", Toast.LENGTH_LONG).show();
                     }else{
-                        Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Login failed.", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
-
+        MainActivity.loggedIn = mAuth.getCurrentUser() != null;
     }
 }

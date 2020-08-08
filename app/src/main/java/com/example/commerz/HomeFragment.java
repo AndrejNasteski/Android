@@ -2,18 +2,14 @@ package com.example.commerz;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -29,7 +25,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<CardItem> exampleList;
 
-
+    private TextView loginTest;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -68,6 +64,9 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
 
+        loginTest = view.findViewById(R.id.login_test);
+        updateUserLogin();
+
         createExampleList();
         buildRecyclerView(view);
 
@@ -96,7 +95,21 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public void buildRecyclerView(View view){
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUserLogin();
+    }
+
+    public void updateUserLogin() {
+        if (MainActivity.loggedIn) {
+            loginTest.setText("logged in");
+        } else {
+            loginTest.setText("NOT logged in");
+        }
+    }
+
+    public void buildRecyclerView(View view) {
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());

@@ -1,13 +1,14 @@
 package com.example.commerz;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 public class AdDetailsActivity extends AppCompatActivity {
+
+    private ViewPager viewPager;
+    private ImageAdapter imageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +17,8 @@ public class AdDetailsActivity extends AppCompatActivity {
 
         int temp = getIntent().getExtras().getInt("card");
 
-        TextView textView = (TextView) findViewById(R.id.details_activity_text);
-        textView.setText(Integer.toString(temp));
+        viewPager = findViewById(R.id.image_view_pager);
+        imageAdapter = new ImageAdapter(this);
+        viewPager.setAdapter(imageAdapter);
     }
 }

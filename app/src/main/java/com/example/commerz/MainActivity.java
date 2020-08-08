@@ -1,5 +1,13 @@
 package com.example.commerz;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,17 +16,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private NavigationView navigationView;
+    public static boolean loggedIn;
+    public static String userID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        loggedIn = FirebaseAuth.getInstance().getCurrentUser() != null;
+        userID = FirebaseAuth.getInstance().getUid();
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -61,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.add(R.id.flMain, new HomeFragment());
             fragmentTransaction.commit();
 
-            navigationView.setCheckedItem(R.id.nav_home);
+        navigationView.setCheckedItem(R.id.nav_home);
     }
 
     public void setActionBarTitle(String title) {
@@ -105,27 +114,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.add(R.id.flMain, new HomeFragment());
             fragmentTransaction.commit();
         } else if (id == R.id.nav_profile) {
-            openAccountActivity(0);
+            if (loggedIn) {
+                openAccountActivity(0);
+            } else {
+                Toast.makeText(this, "You need to login first", Toast.LENGTH_LONG).show();
+            }
         }
         else if (id == R.id.nav_add) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.flMain, new NewAdFragment());
-            fragmentTransaction.commit();
+            if (loggedIn) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.flMain, new NewAdFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            } else {
+                Toast.makeText(this, "You need to login to an account to make an ad", Toast.LENGTH_LONG).show();
+            }
         }
         else if (id == R.id.nav_favorite) {
-            openAccountActivity(2);
+            if (loggedIn) {
+                openAccountActivity(2);
+            } else {
+                Toast.makeText(this, "You need to login first", Toast.LENGTH_LONG).show();
+            }
         }
         else if (id == R.id.nav_my_ads) {
-            openAccountActivity(1);
+            if (loggedIn) {
+                openAccountActivity(1);
+            } else {
+                Toast.makeText(this, "You need to login first", Toast.LENGTH_LONG).show();
+            }
         }
         else if (id == R.id.nav_register){
             androidx.fragment.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.addToBackStack(null);
             ft.replace(R.id.flMain, new RegisterFragment());
             ft.commit();
         }
         else if (id == R.id.nav_login){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.addToBackStack(null);
             ft.replace(R.id.flMain, new LoginFragment());
             ft.commit();
         }
