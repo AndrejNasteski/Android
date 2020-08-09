@@ -43,12 +43,23 @@
             android:text="Details placeholder" />
 
         <TextView
+            android:id="@+id/details_category_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/details_details_text"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:text="Category placeholder" />
+
+        <TextView
+            android:id="@+id/details_location_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/details_category_text"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Location placeholder" />
 
 
     </RelativeLayout>

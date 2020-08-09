@@ -19,19 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class LoginFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-
-    // TODO: Rename and change types of parameters
-
 
     private EditText email;
     private EditText password;
@@ -44,18 +33,8 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     public LoginFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static LoginFragment newInstance(String param1, String param2) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
@@ -73,8 +52,8 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         email = (EditText) view.findViewById(R.id.edit_text_email);
         password = (EditText) view.findViewById(R.id.edit_text_password);
         login_button = (Button) view.findViewById(R.id.login_button);
@@ -84,16 +63,13 @@ public class LoginFragment extends Fragment {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null) {
-                    String uid = mAuth.getCurrentUser().getUid();
-                    Toast.makeText(getContext(), uid, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
-                }
+                if (firebaseAuth.getCurrentUser() != null)
+                    MainActivity.userID = mAuth.getCurrentUser().getUid();
+
             }
         };
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        textView.setOnClickListener(new View.OnClickListener() { // switch to register fragment
             @Override
             public void onClick(View v) {
                 FragmentTransaction f = getParentFragmentManager().beginTransaction();
@@ -114,6 +90,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
+                MainActivity.userID = null;
                 MainActivity.loggedIn = mAuth.getCurrentUser() != null;
                 Toast.makeText(getContext(), "You are now logged out", Toast.LENGTH_SHORT).show();
             }
@@ -131,7 +108,7 @@ public class LoginFragment extends Fragment {
         String user = email.getText().toString();
         String pass = password.getText().toString();
         if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass)){
-            Toast.makeText(getContext(), "ENTER SOME DATA U PIECE OF SHIUET", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please fill out all the fields.", Toast.LENGTH_SHORT).show();
         }else{
             mAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -139,6 +116,7 @@ public class LoginFragment extends Fragment {
                     if(task.isSuccessful()) {
                         FragmentTransaction f = getParentFragmentManager().beginTransaction();
                         MainActivity.loggedIn = mAuth.getCurrentUser() != null;
+                        MainActivity.userID = mAuth.getUid();
                         f.replace(R.id.flMain, new HomeFragment()).commit();
                         Toast.makeText(getContext(), "You are now logged in.", Toast.LENGTH_LONG).show();
                     }else{

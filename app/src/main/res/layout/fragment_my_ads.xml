@@ -4,13 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFED77"
-    tools:context=".ui.main.MyAdsFragment"
-    >
+    tools:context=".ui.main.MyAdsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="My Ads Fragment" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/test_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Favorite Fragment" />
+
+        <Button
+            android:id="@+id/put_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="put data" />
+    </RelativeLayout>
 
 </FrameLayout>

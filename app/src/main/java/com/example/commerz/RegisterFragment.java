@@ -2,43 +2,29 @@ package com.example.commerz;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegisterFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegisterFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-
-    // TODO: Rename and change types of parameters
-
-
     private FirebaseAuth mAuth;
 
     private EditText name;
@@ -48,23 +34,16 @@ public class RegisterFragment extends Fragment {
     private EditText confirmPassword;
     private EditText phone;
     private Button registerButton;
-    private TextView textView;
+    private TextView textClickRegister;
 
     private ProgressDialog progressDialog;
-
+    private FirebaseFirestore db;
 
     public RegisterFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-
-     * @return A new instance of fragment RegisterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RegisterFragment newInstance(String param1, String param2) {
+    public static RegisterFragment newInstance() {
         RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -80,20 +59,20 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+        db = FirebaseFirestore.getInstance();
 
-        name = (EditText) view.findViewById(R.id.edit_text_name);
-        surname = (EditText) view.findViewById(R.id.edit_text_surname);
-        email = (EditText) view.findViewById(R.id.edit_text_email_register);
-        phone = (EditText) view.findViewById(R.id.edit_phone_number);
-        password = (EditText) view.findViewById(R.id.password_register);
-        confirmPassword = (EditText) view.findViewById(R.id.password_register_confirm);
-        registerButton = (Button) view.findViewById(R.id.button_register);
+        name = view.findViewById(R.id.edit_text_name);
+        surname = view.findViewById(R.id.edit_text_surname);
+        email = view.findViewById(R.id.edit_text_email_register);
+        phone = view.findViewById(R.id.edit_phone_number);
+        password = view.findViewById(R.id.password_register);
+        confirmPassword = view.findViewById(R.id.password_register_confirm);
+        registerButton = view.findViewById(R.id.button_register);
+        textClickRegister = view.findViewById(R.id.text_click_register);
         progressDialog = new ProgressDialog(getContext());
-        textView = view.findViewById(R.id.text_click_register);
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        textClickRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction f = getParentFragmentManager().beginTransaction();
@@ -102,16 +81,12 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        final String user = email.getText().toString();
-        final String pass = password.getText().toString();
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createAccount();
             }
         });
-
 
         return view;
     }
@@ -120,20 +95,30 @@ public class RegisterFragment extends Fragment {
         String user = email.getText().toString();
         String pass = password.getText().toString();
 
-        progressDialog.setMessage("Registering");
+        progressDialog.setMessage("Setting up account");
         progressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getContext(), "SUCCESSFUL REGISTER", Toast.LENGTH_SHORT).show();
+                    createDatabase();
+                    Toast.makeText(getContext(), "Successful register", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                 }
                 progressDialog.dismiss();
             }
         });
+    }
+
+    public void createDatabase() {
+        Map<String, Object> testObject = new HashMap<>();
+        testObject.put("Dummy", "Ad");
+        db.collection("users")
+                .document(MainActivity.userID)
+                .collection("Ads")
+                .add(testObject);
     }
 
 
