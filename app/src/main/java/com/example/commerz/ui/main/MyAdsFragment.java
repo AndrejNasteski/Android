@@ -5,13 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.commerz.R;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -57,6 +55,18 @@ public class MyAdsFragment extends Fragment {
         Button button = view.findViewById(R.id.put_data);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v) {
+                List<String> ids = new ArrayList<>();
+                List<DocumentSnapshot> lista = db.collection("users")
+                        .get()
+                        .getResult()
+                        .getDocuments();
+                for (int i = 0; i < lista.size(); i++) {
+                    ids.add(lista.get(i).getId());
+                }
+            }
+            /*
+            @Override
             public void onClick(View v) { // for deletion
                 db.collection("users")
                         .document("newUserTest222333kuraccc")
@@ -68,8 +78,10 @@ public class MyAdsFragment extends Fragment {
                                 Toast.makeText(getContext(), "SUCCESFUL USER ", Toast.LENGTH_SHORT).show();
                             }
                         });
-            }
+            }*/
         });
         return view;
     }
+
+
 }

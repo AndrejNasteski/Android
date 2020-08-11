@@ -4,13 +4,115 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NewAdFragment"
-    android:background="#D62B2B"
     >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="New Ad Fragment" />
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/edit_text_title"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:hint="Title" />
+
+        <EditText
+            android:id="@+id/edit_text_details"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_text_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Details about the ad"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/edit_text_price"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_text_details"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="Price" />
+
+        <EditText
+            android:id="@+id/edit_text_location"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/radio_group_currency"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="Location" />
+
+        <EditText
+            android:id="@+id/edit_text_category"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_text_location"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="Category" />
+
+        <CheckBox
+            android:id="@+id/checkbox_mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_text_category"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Show E-Mail" />
+
+        <CheckBox
+            android:id="@+id/checkbox_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/checkbox_mail"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Show Phone Number" />
+
+        <Button
+            android:id="@+id/create_ad_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:text="Create Ad" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_text_price"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/MKD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MKD" />
+
+            <RadioButton
+                android:id="@+id/EUR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EUR" />
+
+            <RadioButton
+                android:id="@+id/USD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="USD" />
+        </RadioGroup>
+
+
+    </RelativeLayout>
 
 </FrameLayout>

@@ -1,6 +1,7 @@
 package com.example.commerz.ui.main;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -36,10 +37,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 fragment = new ProfileFragment();
                 break;
             case 1:
-                fragment = new MyAdsFragment();
+                Bundle b1 = new Bundle();
+                b1.putString("list", "my_ads");
+                HomeFragment hf1 = new HomeFragment();
+                hf1.setArguments(b1);
+                fragment = hf1;
                 break;
             case 2:
-                fragment = new HomeFragment();
+                Bundle b2 = new Bundle();
+                b2.putString("list", "favorites");
+                HomeFragment hf2 = new HomeFragment();
+                hf2.setArguments(b2);
+                fragment = hf2;
                 break;
         }
         return fragment;

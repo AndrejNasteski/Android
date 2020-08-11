@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
@@ -62,13 +61,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        //default fragment for home
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.flMain, new HomeFragment());
-            fragmentTransaction.commit();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Bundle b = new Bundle();
+        b.putString("list", "home");
+        HomeFragment hf = new HomeFragment();
+        hf.setArguments(b);
+        fragmentTransaction.add(R.id.flMain, hf);
+        fragmentTransaction.commit();
 
         navigationView.setCheckedItem(R.id.nav_home);
     }
@@ -109,9 +109,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.flMain, new HomeFragment());
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            Bundle b = new Bundle();
+            b.putString("list", "home");
+            HomeFragment hf = new HomeFragment();
+            hf.setArguments(b);
+            fragmentTransaction.replace(R.id.flMain, hf);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_profile) {
             if (loggedIn) {
@@ -119,39 +122,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else {
                 Toast.makeText(this, "You need to login first", Toast.LENGTH_LONG).show();
             }
-        }
-        else if (id == R.id.nav_add) {
+        } else if (id == R.id.nav_add) {
             if (loggedIn) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.flMain, new NewAdFragment());
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.flMain, new NewAdFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             } else {
                 Toast.makeText(this, "You need to login to an account to make an ad", Toast.LENGTH_LONG).show();
             }
-        }
-        else if (id == R.id.nav_favorite) {
+        } else if (id == R.id.nav_favorite) {
             if (loggedIn) {
                 openAccountActivity(2);
             } else {
                 Toast.makeText(this, "You need to login first", Toast.LENGTH_LONG).show();
             }
-        }
-        else if (id == R.id.nav_my_ads) {
+        } else if (id == R.id.nav_my_ads) {
             if (loggedIn) {
                 openAccountActivity(1);
             } else {
                 Toast.makeText(this, "You need to login first", Toast.LENGTH_LONG).show();
             }
-        }
-        else if (id == R.id.nav_register){
+        } else if (id == R.id.nav_register) {
             androidx.fragment.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.addToBackStack(null);
             ft.replace(R.id.flMain, new RegisterFragment());
             ft.commit();
-        }
-        else if (id == R.id.nav_login){
+        } else if (id == R.id.nav_login) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.addToBackStack(null);
             ft.replace(R.id.flMain, new LoginFragment());
@@ -164,12 +161,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void openAccountActivity(int access){ // 0 profile, 1 my ads, 2 favorite
+    public void openAccountActivity(int access) { // 0 profile, 1 my ads, 2 favorite
         Intent i = new Intent(MainActivity.this, AccountActivity.class);
         i.putExtra("access", access);
         startActivity(i);
     }
-
 
 
 }

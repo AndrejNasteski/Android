@@ -1,26 +1,31 @@
 package com.example.commerz;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class HomeFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
-    private CardAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<CardItem> exampleList;
+    private FirebaseFirestore db;
 
+    private RecyclerView mRecyclerView;
+    private AdCardAdapter adCardAdapter;
     private TextView loginTest;
+    private RadioGroup currency;
+
+    private String arguments;
+
 
     public HomeFragment() {
     }
@@ -41,24 +46,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        db = FirebaseFirestore.getInstance();
+
+        arguments = getArguments().getString("list");
 
 
         loginTest = view.findViewById(R.id.login_test);
         updateUserLogin();
-
-        createExampleList();
         buildRecyclerView(view);
-
-        mAdapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(getContext(), AdDetailsActivity.class);
-                intent.putExtra("card", position);
-                //intent.putExtra("adID", );
-                startActivity(intent);
-            }
-        });
-
 
         return view;
     }
@@ -67,37 +62,54 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateUserLogin();
+        adCardAdapter.startListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adCardAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adCardAdapter.stopListening();
     }
 
     public void updateUserLogin() {
         if (MainActivity.loggedIn) {
-            loginTest.setText("logged in");
+            loginTest.setText("logged in" + arguments);
         } else {
-            loginTest.setText("NOT logged in");
+            loginTest.setText("NOT logged in" + arguments);
         }
     }
 
-    public void buildRecyclerView(View view) {
+
+    private void buildRecyclerView(View view) {
+        Query query = null;
+        if (arguments.equals("my_ads")) {
+            query = db.collection("ads")
+                    .whereEqualTo("creatorUID", MainActivity.userID)
+                    .orderBy("title");
+        } else if (arguments.equals("favorites")) {
+            query = db.collection("ads")
+                    .orderBy("title");
+        } else { // home
+            query = db.collection("ads")
+                    .orderBy("title");
+        }
+
+
+        FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>()
+                .setQuery(query, Ad.class)
+                .build();
+        adCardAdapter = new AdCardAdapter(options);
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new CardAdapter(exampleList);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(adCardAdapter);
     }
 
-    public void createExampleList(){
-        exampleList = new ArrayList<>();
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-        exampleList.add(new CardItem(R.drawable.ic_launcher_background, "Prva linija test", "Vtora linija", "Treta"));
-    }
 
 }

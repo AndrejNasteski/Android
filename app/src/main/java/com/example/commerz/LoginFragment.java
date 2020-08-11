@@ -117,7 +117,13 @@ public class LoginFragment extends Fragment {
                         FragmentTransaction f = getParentFragmentManager().beginTransaction();
                         MainActivity.loggedIn = mAuth.getCurrentUser() != null;
                         MainActivity.userID = mAuth.getUid();
-                        f.replace(R.id.flMain, new HomeFragment()).commit();
+
+                        Bundle b = new Bundle();
+                        b.putString("list", "home");
+                        HomeFragment fragment = new HomeFragment();
+                        fragment.setArguments(b);
+
+                        f.replace(R.id.flMain, fragment).commit();
                         Toast.makeText(getContext(), "You are now logged in.", Toast.LENGTH_LONG).show();
                     }else{
                         Toast.makeText(getContext(), "Login failed.", Toast.LENGTH_SHORT).show();

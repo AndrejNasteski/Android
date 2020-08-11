@@ -1,58 +1,79 @@
 package com.example.commerz;
 
-import java.util.Map;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
-public class Ad extends Throwable {
-    private String Title;
-    private String Details;
-    private Long Price;
-    private String StringLocation;
-    private Boolean ShowMail;
-    private Boolean ShowPhone;
+import java.util.Date;
+
+@IgnoreExtraProperties
+public class Ad {
+
+    private String title;
+    private String details;
+    private Long price;
+    private String stringLocation;
+    private String category;
+    private Boolean showMail;
+    private Boolean showPhone;
+    private String creatorUID;
+    private Date dateCreated;
+    private String currency;
 
     public Ad() {
 
     }
 
-    public Ad(String Details, Long Price, Boolean ShowMail, Boolean ShowPhone, String StringLocation, String Title) {
-        this.Title = Title;
-        this.Details = Details;
-        this.Price = Price;
-        this.StringLocation = StringLocation;
-        this.ShowMail = ShowMail;
-        this.ShowPhone = ShowPhone;
+    public Ad(String details, Long price, String currency, String category, Boolean showMail, Boolean showPhone,
+              String stringLocation, String title, String creatorUID, Date dateCreated) {
+        this.currency = currency;
+        this.category = category;
+        this.title = title;
+        this.details = details;
+        this.price = price;
+        this.stringLocation = stringLocation;
+        this.showMail = showMail;
+        this.showPhone = showPhone;
+        this.creatorUID = creatorUID;
+        this.dateCreated = dateCreated;
     }
 
-    public void addData(Map<String, Object> map) {
-        this.Title = map.get("Title").toString();
-        this.Details = map.get("Details").toString();
-        this.Price = (Long) map.get("Title");
-        this.StringLocation = map.get("StringLocation").toString();
-        this.ShowMail = (Boolean) map.get("ShowMail");
-        this.ShowPhone = (Boolean) map.get("ShowPhone");
-    }
 
     public String getTitle() {
-        return Title;
+        return title;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 
     public String getDetails() {
-        return Details;
+        return details;
     }
 
     public Long getPrice() {
-        return Price;
+        return price;
     }
 
     public String getStringLocation() {
-        return StringLocation;
+        return stringLocation;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public Boolean getShowMail() {
-        return ShowMail;
+        return showMail;
     }
 
     public Boolean getShowPhone() {
-        return ShowPhone;
+        return showPhone;
+    }
+
+    public String getCreatorUID() {
+        return creatorUID;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
     }
 }
