@@ -36,6 +36,7 @@ public class RegisterFragment extends Fragment {
     private Button registerButton;
     private TextView textClickRegister;
 
+
     private ProgressDialog progressDialog;
     private FirebaseFirestore db;
 
@@ -65,12 +66,13 @@ public class RegisterFragment extends Fragment {
         name = view.findViewById(R.id.edit_text_name);
         surname = view.findViewById(R.id.edit_text_surname);
         email = view.findViewById(R.id.edit_text_email_register);
-        phone = view.findViewById(R.id.edit_phone_number);
+        phone = view.findViewById(R.id.enter_phone_number);
         password = view.findViewById(R.id.password_register);
         confirmPassword = view.findViewById(R.id.password_register_confirm);
         registerButton = view.findViewById(R.id.button_register);
         textClickRegister = view.findViewById(R.id.text_click_register);
         progressDialog = new ProgressDialog(getContext());
+
 
         textClickRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,11 +116,12 @@ public class RegisterFragment extends Fragment {
 
     public void createDatabase() {
         Map<String, Object> testObject = new HashMap<>();
-        testObject.put("Dummy", "Ad");
-        db.collection("users")
-                .document(MainActivity.userID)
-                .collection("Ads")
-                .add(testObject);
+        testObject.put("name", name.getText().toString());
+        testObject.put("surname", surname.getText().toString());
+        testObject.put("phone", phone.getText().toString());
+        testObject.put("email", email.getText().toString());
+
+        db.collection("users").add(testObject);
     }
 
 

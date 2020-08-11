@@ -1,5 +1,6 @@
 package com.example.commerz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -55,6 +57,18 @@ public class HomeFragment extends Fragment {
         updateUserLogin();
         buildRecyclerView(view);
 
+        adCardAdapter.setOnItemClickListener(new AdCardAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+
+                String documentID = documentSnapshot.getId();
+                Intent intent = new Intent(getActivity(), AdDetailsActivity.class);
+                intent.putExtra("documentID", documentID);
+                intent.putExtra("from", arguments);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -91,9 +105,6 @@ public class HomeFragment extends Fragment {
         if (arguments.equals("my_ads")) {
             query = db.collection("ads")
                     .whereEqualTo("creatorUID", MainActivity.userID)
-                    .orderBy("title");
-        } else if (arguments.equals("favorites")) {
-            query = db.collection("ads")
                     .orderBy("title");
         } else { // home
             query = db.collection("ads")

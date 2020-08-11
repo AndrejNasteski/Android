@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class AdCardAdapter extends FirestoreRecyclerAdapter<Ad, AdCardAdapter.AdCardHolder> {
+    private OnItemClickListener listener;
 
     public AdCardAdapter(@NonNull FirestoreRecyclerOptions<Ad> options) {
         super(options);
@@ -33,6 +35,14 @@ public class AdCardAdapter extends FirestoreRecyclerAdapter<Ad, AdCardAdapter.Ad
         return new AdCardHolder(view);
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
     class AdCardHolder extends RecyclerView.ViewHolder {
         TextView textTitle;
         TextView textPrice;
@@ -45,6 +55,16 @@ public class AdCardAdapter extends FirestoreRecyclerAdapter<Ad, AdCardAdapter.Ad
             textPrice = itemView.findViewById(R.id.price_text_card);
             textLocation = itemView.findViewById(R.id.location_text_card);
             imageView = itemView.findViewById(R.id.image_view_card);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
 
         }
     }

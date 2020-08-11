@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        // find MenuItem you want to change
+
 
         View headView = navigationView.getHeaderView(0);
         ImageView imgProfile = headView.findViewById(R.id.imgProfile);
@@ -131,12 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else {
                 Toast.makeText(this, "You need to login to an account to make an ad", Toast.LENGTH_LONG).show();
             }
-        } else if (id == R.id.nav_favorite) {
-            if (loggedIn) {
-                openAccountActivity(2);
-            } else {
-                Toast.makeText(this, "You need to login first", Toast.LENGTH_LONG).show();
-            }
         } else if (id == R.id.nav_my_ads) {
             if (loggedIn) {
                 openAccountActivity(1);
@@ -161,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public void openAccountActivity(int access) { // 0 profile, 1 my ads, 2 favorite
+    public void openAccountActivity(int access) { // 0 profile, 1 my ads
         Intent i = new Intent(MainActivity.this, AccountActivity.class);
         i.putExtra("access", access);
         startActivity(i);
