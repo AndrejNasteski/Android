@@ -92,8 +92,20 @@ public class AdDetailsActivity extends AppCompatActivity {
                         Price.setText(temp.getPrice().toString());
                         Location.setText(temp.getStringLocation());
                         Category.setText(temp.getCategory());
+                        db.collection("users")
+                                .document(temp.getCreatorUID())
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        phoneNumber = task.getResult().get("phone").toString();
+                                    }
+                                });
                     }
                 });
+
+
+
         /*
         String userID = db.collection("/users/oaE9MS0YniHy3PqQPMF8")
                 .document().get().getResult().getString("UserID");
@@ -138,7 +150,8 @@ public class AdDetailsActivity extends AppCompatActivity {
     }
 
     private void makePhoneCall() {
-        String number = "4234";  // get phone number from creatorUID
+        String number = phoneNumber;
+
         if (ContextCompat.checkSelfPermission(AdDetailsActivity.this,
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(AdDetailsActivity.this,
