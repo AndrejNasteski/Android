@@ -2,10 +2,13 @@ package com.example.commerz;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,6 +42,8 @@ public class AdDetailsActivity extends AppCompatActivity {
     private Button EMailButton;
     private Button DeleteAdButton;
     private String phoneNumber;
+    private boolean fromHome;
+    private String creatorUID;
 
 
     @Override
@@ -56,19 +61,10 @@ public class AdDetailsActivity extends AppCompatActivity {
         EMailButton = findViewById(R.id.send_email_button);
         DeleteAdButton = findViewById(R.id.delete_ad_button);
 
-
-        if (getIntent().getExtras().getString("from").equals("home")) {
-            CallButton.setVisibility(View.VISIBLE);
-            EMailButton.setVisibility(View.VISIBLE);
-            DeleteAdButton.setVisibility(View.INVISIBLE);
-        } else { // from my ads fragment
-            CallButton.setVisibility(View.INVISIBLE);
-            EMailButton.setVisibility(View.INVISIBLE);
-            DeleteAdButton.setVisibility(View.VISIBLE);
-        }
+        fromHome = getIntent().getExtras().getString("from").equals("home");
 
 
-        String documentID = getIntent().getExtras().getString("documentID");
+        final String documentID = getIntent().getExtras().getString("documentID"); // Ad ID
 
         CallButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,8 +73,25 @@ public class AdDetailsActivity extends AppCompatActivity {
             }
         });
 
+        DeleteAdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getApplicationContext())
+                        .setTitle("Delete Ad")
+                        .setMessage("Do you want to delete this ad?")
+                        .setPositiveButton(android.R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteAd(documentID);
+                                    }
+                                }).setNegativeButton(android.R.string.no, null)
+                        .show();
+            }
+        });
 
-        final int position = getIntent().getExtras().getInt("card");
+
+        final int position = getIntent().getExtras().getInt("card"); // for delete probably
 
         db.collection("ads")
                 .document(documentID)
@@ -91,56 +104,37 @@ public class AdDetailsActivity extends AppCompatActivity {
                         Details.setText(temp.getDetails());
                         Price.setText(temp.getPrice().toString());
                         Location.setText(temp.getStringLocation());
+                        creatorUID = temp.getCreatorUID();
                         Category.setText(temp.getCategory());
-                        db.collection("users")
-                                .document(temp.getCreatorUID())
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        phoneNumber = task.getResult().get("phone").toString();
-                                    }
-                                });
-                    }
-                });
-
-
-
-        /*
-        String userID = db.collection("/users/oaE9MS0YniHy3PqQPMF8")
-                .document().get().getResult().getString("UserID");
-        Log.v("tag", userID);
-
-        db.collection("/users/oaE9MS0YniHy3PqQPMF8/Ads")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            Ad tempAd = task.getResult().getDocuments().get(position).toObject(Ad.class);
-
-                            Title.setText(tempAd.getTitle());
-                            Details.setText(tempAd.getDetails());
-                            Price.setText(tempAd.getPrice().toString());
-                            Location.setText(tempAd.getStringLocation());
-
-                            for (DocumentSnapshot d : task.getResult().getDocuments()) {
-                                //setData(d.getData());
-                                //adtemp[0] = d.toObject(Ad.class);
-                                Log.v("tag", d.getId() + "======" + d.getData());
-                            }
+                        setButtonVisibility();
+                        if (fromHome && !temp.getCreatorUID().equals(MainActivity.userID)) { // user created Ad
+                            db.collection("users")
+                                    .document(temp.getCreatorUID())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            Log.e("newTag", task.getResult().get("name").toString());
+                                            Log.e("newTag", task.getResult().get("phone").toString());
+                                            phoneNumber = task.getResult().get("phone").toString();
+                                        }
+                                    });
                         }
                     }
                 });
 
-        final DocumentReference documentReference = db
-                .collection("/users/oaE9MS0YniHy3PqQPMF8/Ads")
-                .document("U1UhZT1BTs0s5RwuySen");*/
-
         viewPager = findViewById(R.id.image_view_pager);
         imageAdapter = new ImageAdapter(this);
         viewPager.setAdapter(imageAdapter);
+    }
+
+
+    private void deleteAd(String documentID) {
+        db.collection("ads")
+                .document(documentID)
+                .delete();
+        finish();
+        Toast.makeText(this, "Ad deleted", Toast.LENGTH_LONG).show();
     }
 
     private class AdViewHolder extends RecyclerView.ViewHolder {
@@ -149,9 +143,20 @@ public class AdDetailsActivity extends AppCompatActivity {
         }
     }
 
+    private void setButtonVisibility() {
+        if (!MainActivity.userID.equals(creatorUID)) { // accessed form home fragment
+            CallButton.setVisibility(View.VISIBLE);
+            EMailButton.setVisibility(View.VISIBLE);
+            DeleteAdButton.setVisibility(View.INVISIBLE);
+        } else { // accessed form my_ads fragment
+            CallButton.setVisibility(View.INVISIBLE);
+            EMailButton.setVisibility(View.INVISIBLE);
+            DeleteAdButton.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void makePhoneCall() {
         String number = phoneNumber;
-
         if (ContextCompat.checkSelfPermission(AdDetailsActivity.this,
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(AdDetailsActivity.this,
@@ -165,7 +170,6 @@ public class AdDetailsActivity extends AppCompatActivity {
     @SuppressLint("MissingSuperCall")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CALL) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 makePhoneCall();

@@ -93,16 +93,16 @@ public class HomeFragment extends Fragment {
 
     public void updateUserLogin() {
         if (MainActivity.loggedIn) {
-            loginTest.setText("logged in" + arguments);
+            loginTest.setText("logged in" + arguments + MainActivity.userID);
         } else {
-            loginTest.setText("NOT logged in" + arguments);
+            loginTest.setText("NOT logged in" + arguments + MainActivity.userID);
         }
     }
 
 
     private void buildRecyclerView(View view) {
         Query query = null;
-        if (arguments.equals("my_ads")) {
+        if (arguments.equals("my_ads")) { // my_ads
             query = db.collection("ads")
                     .whereEqualTo("creatorUID", MainActivity.userID)
                     .orderBy("title");

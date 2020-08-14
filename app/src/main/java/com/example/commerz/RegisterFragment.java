@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterFragment extends Fragment {
-    private FirebaseAuth mAuth;
 
     private EditText name;
     private EditText surname;
@@ -39,6 +38,7 @@ public class RegisterFragment extends Fragment {
 
     private ProgressDialog progressDialog;
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
     public RegisterFragment() {
 
@@ -120,8 +120,8 @@ public class RegisterFragment extends Fragment {
         testObject.put("surname", surname.getText().toString());
         testObject.put("phone", phone.getText().toString());
         testObject.put("email", email.getText().toString());
-
-        db.collection("users").add(testObject);
+        db.collection("users").document(mAuth.getUid())
+                .set(testObject);
     }
 
 

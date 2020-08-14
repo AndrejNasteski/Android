@@ -37,6 +37,7 @@
             android:layout_below="@id/edit_text_details"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:inputType="number"
             android:hint="Price" />
 
         <EditText
@@ -64,7 +65,7 @@
             android:layout_below="@id/edit_text_category"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Show E-Mail" />
+            android:text="Show E-Mail on this ad" />
 
         <CheckBox
             android:id="@+id/checkbox_phone"
@@ -73,7 +74,7 @@
             android:layout_below="@id/checkbox_mail"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Show Phone Number" />
+            android:text="Show Phone Number on this ad" />
 
         <Button
             android:id="@+id/create_ad_button"

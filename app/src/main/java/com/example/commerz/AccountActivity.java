@@ -2,18 +2,11 @@ package com.example.commerz;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.commerz.ui.main.SectionsPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -28,16 +21,11 @@ public class AccountActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
 
         int tabInt = getIntent().getExtras().getInt("access");
-        if (tabInt == 0){ // profile
+        if (tabInt == 0) { // profile
             TabLayout.Tab selected = tabs.getTabAt(0);
             selected.select();
-        }
-        else if (tabInt == 1){
+        } else if (tabInt == 1) { // myy ads
             TabLayout.Tab selected = tabs.getTabAt(1);
-            selected.select();
-        }
-        else if (tabInt == 2 ){
-            TabLayout.Tab selected = tabs.getTabAt(2);
             selected.select();
         }
     }
