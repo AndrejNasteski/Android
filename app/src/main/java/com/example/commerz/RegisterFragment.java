@@ -76,7 +76,7 @@ public class RegisterFragment extends Fragment {
 
         textClickRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {  //switch to login fragment
                 FragmentTransaction f = getParentFragmentManager().beginTransaction();
                 f.addToBackStack(null);
                 f.replace(R.id.flMain, new LoginFragment()).commit();
@@ -86,7 +86,9 @@ public class RegisterFragment extends Fragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAccount();
+                if (validateForm()) {
+                    createAccount();
+                }
             }
         });
 
@@ -105,9 +107,15 @@ public class RegisterFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     createDatabase();
-                    Toast.makeText(getContext(), "Successful register", Toast.LENGTH_SHORT).show();
+                    name.setText("");
+                    surname.setText("");
+                    email.setText("");
+                    phone.setText("");
+                    password.setText("");
+                    confirmPassword.setText("");
+                    Toast.makeText(getContext(), "Account successfully registered", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Authentication failed", Toast.LENGTH_LONG).show();
                 }
                 progressDialog.dismiss();
             }
@@ -133,13 +141,13 @@ public class RegisterFragment extends Fragment {
         String name_string = name.getText().toString();
         String surname_string = surname.getText().toString();
         String phone_string = phone.getText().toString();
-        String password_confirm_string = confirmPassword.getText().toString();
 
         String password_string = password.getText().toString();
+        String password_confirm_string = confirmPassword.getText().toString();
 
         if (TextUtils.isEmpty(email_string)) {
             email.setError("Required.");
-            Toast.makeText(getContext(), "wrong email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Wrong e-mail", Toast.LENGTH_SHORT).show();
             valid = false;
         } else {
             email.setError(null);
@@ -168,7 +176,6 @@ public class RegisterFragment extends Fragment {
 
         if (TextUtils.isEmpty(password_string)) {
             password.setError("Required.");
-            Toast.makeText(getContext(), "wrong pass", Toast.LENGTH_SHORT).show();
             valid = false;
         } else {
             password.setError(null);
@@ -183,14 +190,16 @@ public class RegisterFragment extends Fragment {
 
         if (!password_confirm_string.equals(password_string)) {
             confirmPassword.setError("Password not matching");
+            valid = false;
         } else {
             confirmPassword.setError(null);
         }
 
         if (password_string.length() < 5) {
-            confirmPassword.setError("Password must be longer than 5 characters");
+            password.setError("Password must be longer than 5 characters");
+            valid = false;
         } else {
-            confirmPassword.setError(null);
+            password.setError(null);
         }
 
         return valid;

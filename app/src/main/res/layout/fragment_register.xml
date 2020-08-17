@@ -19,7 +19,9 @@
             android:layout_marginTop="50dp"
             android:ems="10"
             android:hint="E-mail"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/edit_text_name"
@@ -28,7 +30,9 @@
             android:layout_below="@+id/edit_text_email_register"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:hint="Name" />
+            android:hint="Name"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/edit_text_surname"
@@ -37,17 +41,21 @@
             android:layout_below="@id/edit_text_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:hint="Surname" />
+            android:hint="Surname"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/enter_phone_number"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_below="@id/edit_text_surname"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:hint="phone"
-            android:layout_below="@id/edit_text_surname"
             android:inputType="phone"
-            android:layout_centerHorizontal="true" />
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/password_register"
@@ -57,7 +65,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:hint="password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/password_register_confirm"
@@ -68,7 +78,9 @@
             android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="confirm password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
 
         <Button
@@ -88,7 +100,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:clickable="true"
-            android:text="Have an account? Login here." />
+            android:focusable="true"
+            android:text="Have an account? Login here."
+            android:textColor="#8C8C8C" />
 
 
     </RelativeLayout>

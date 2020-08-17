@@ -10,13 +10,25 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImageAdapter extends PagerAdapter {
     private Context mContext;
-    private int[] mImageIDs;
+    private List<String> imageUriList;
 
-    public ImageAdapter(Context context) {
+
+    public ImageAdapter(Context context, List<String> uriArrayList) {
         mContext = context;
-        mImageIDs = new int[]{R.drawable.image_2, R.drawable.image_1};
+
+        imageUriList = new ArrayList<>();
+        if (!uriArrayList.isEmpty()) {
+            for (int i = 0; i < uriArrayList.size(); i++) {
+                imageUriList.add("https://firebasestorage.googleapis.com/v0/b/commerz-2ca14.appspot.com/o/images%2F" +
+                        uriArrayList.get(i) + "?alt=media"
+                );
+            }
+        }
     }
 
     @NonNull
@@ -24,11 +36,14 @@ public class ImageAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(mContext);
         Picasso.get()
-                .load(mImageIDs[position])
+                .load(imageUriList.get(position))
                 .fit()
+                .placeholder(R.drawable.ic_loud_upload)
                 .centerCrop()
                 .into(imageView);
         container.addView(imageView);
+
+
         return imageView;
     }
 
@@ -39,7 +54,7 @@ public class ImageAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mImageIDs.length;
+        return imageUriList.size();
     }
 
     @Override

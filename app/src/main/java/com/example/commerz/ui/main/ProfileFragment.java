@@ -48,8 +48,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -101,8 +99,6 @@ public class ProfileFragment extends Fragment {
                 testObject.put("name", name.getText().toString());
                 testObject.put("surname", surname.getText().toString());
                 testObject.put("phone", phone.getText().toString());
-
-
                 db.collection("users")
                         .document(MainActivity.userID)
                         .update(testObject);
@@ -110,7 +106,6 @@ public class ProfileFragment extends Fragment {
                 disableButtons();
             }
         });
-
         return view;
     }
 

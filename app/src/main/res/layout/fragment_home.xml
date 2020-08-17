@@ -3,10 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#67D62B"
+    android:background="@color/colorAccent"
     tools:context=".HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +14,7 @@
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp">
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -23,16 +22,6 @@
                 android:layout_height="match_parent" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-        <TextView
-            android:id="@+id/login_test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="620dp"
-            android:text="asdfrasdfasdf" />
-
 
     </RelativeLayout>
 

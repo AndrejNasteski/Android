@@ -14,7 +14,9 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp" />
+            android:layout_marginTop="100dp"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/profile_user_name"
@@ -23,7 +25,9 @@
             android:layout_below="@id/profile_user_email"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
-            android:clickable="false" />
+            android:clickable="false"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/profile_user_surname"
@@ -31,7 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_user_name"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp" />
+            android:layout_marginTop="50dp"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <EditText
             android:id="@+id/profile_user_phone"
@@ -40,7 +46,9 @@
             android:layout_below="@id/profile_user_surname"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary" />
 
         <Button
             android:id="@+id/profile_button_save"

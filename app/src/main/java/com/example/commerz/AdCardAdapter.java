@@ -1,5 +1,6 @@
 package com.example.commerz;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class AdCardAdapter extends FirestoreRecyclerAdapter<Ad, AdCardAdapter.Ad
         super(options);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onBindViewHolder(@NonNull AdCardHolder holder, int position, @NonNull Ad model) {
         holder.textTitle.setText(model.getTitle());

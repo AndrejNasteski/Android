@@ -14,6 +14,8 @@
 
         <EditText
             android:id="@+id/edit_text_email"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -25,11 +27,14 @@
 
         <EditText
             android:layout_centerHorizontal="true"
+            android:hint="password"
+            android:shadowColor="@color/colorPrimary"
             android:layout_below="@+id/edit_text_email"
             android:layout_marginTop="20dp"
             android:id="@+id/edit_text_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
             android:ems="10"
             android:inputType="textPassword"
             android:autofillHints="" />
@@ -53,6 +58,7 @@
             android:text="Logout" />
 
         <TextView
+            android:textColor="#8C8C8C"
             android:id="@+id/text_click_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

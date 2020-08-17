@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="3dp"
     app:cardCornerRadius="5dp">
 
     <RelativeLayout
@@ -21,6 +21,8 @@
 
         <TextView
             android:id="@+id/title_text_card"
+            android:shadowColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title placeholder"
@@ -29,7 +31,7 @@
             android:textSize="20sp"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/price_text_card"

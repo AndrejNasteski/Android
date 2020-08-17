@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
+
 public class AdDetailsActivity extends AppCompatActivity {
     private static final int REQUEST_CALL = 1;
 
@@ -33,17 +35,11 @@ public class AdDetailsActivity extends AppCompatActivity {
     private ImageAdapter imageAdapter;
     private FirebaseFirestore db;
 
-    private TextView Title;
-    private TextView Details;
-    private TextView Price;
-    private TextView Location;
-    private TextView Category;
-    private Button CallButton;
-    private Button EMailButton;
+    private TextView Title, Details, Price, Location, Category, phoneText, emailText;
     private Button DeleteAdButton;
-    private String phoneNumber;
-    private boolean fromHome;
-    private String creatorUID;
+    private String phoneNumber, emailAddress, creatorUID;
+    private ImageView callImage, emailImage;
+    private boolean fromHome, showPhone, showMail;
 
 
     @Override
@@ -57,21 +53,31 @@ public class AdDetailsActivity extends AppCompatActivity {
         Price = findViewById(R.id.details_price_text);
         Location = findViewById(R.id.details_location_text);
         Category = findViewById(R.id.details_category_text);
-        CallButton = findViewById(R.id.call_button);
-        EMailButton = findViewById(R.id.send_email_button);
         DeleteAdButton = findViewById(R.id.delete_ad_button);
+        phoneText = findViewById(R.id.details_phone_number);
+        emailText = findViewById(R.id.details_email_text);
+        callImage = findViewById(R.id.call_image_button);
+        emailImage = findViewById(R.id.email_image_button);
+
 
         fromHome = getIntent().getExtras().getString("from").equals("home");
-
-
         final String documentID = getIntent().getExtras().getString("documentID"); // Ad ID
 
-        CallButton.setOnClickListener(new View.OnClickListener() {
+
+        callImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 makePhoneCall();
             }
         });
+
+        emailImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendEmail();
+            }
+        });
+
 
         DeleteAdButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,9 +96,6 @@ public class AdDetailsActivity extends AppCompatActivity {
             }
         });
 
-
-        final int position = getIntent().getExtras().getInt("card"); // for delete probably
-
         db.collection("ads")
                 .document(documentID)
                 .get()
@@ -102,10 +105,14 @@ public class AdDetailsActivity extends AppCompatActivity {
                         Ad temp = task.getResult().toObject(Ad.class);
                         Title.setText(temp.getTitle());
                         Details.setText(temp.getDetails());
-                        Price.setText(temp.getPrice().toString());
+                        Price.setText(temp.getPrice().toString() + " " + temp.getCurrency());
                         Location.setText(temp.getStringLocation());
                         creatorUID = temp.getCreatorUID();
                         Category.setText(temp.getCategory());
+                        showMail = temp.getShowMail();
+                        showPhone = temp.getShowPhone();
+                        phoneText.setText("Number isn't shown");
+                        emailText.setText("E-mail isn't shown");
                         setButtonVisibility();
                         if (fromHome && !temp.getCreatorUID().equals(MainActivity.userID)) { // user created Ad
                             db.collection("users")
@@ -114,20 +121,57 @@ public class AdDetailsActivity extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            Log.e("newTag", task.getResult().get("name").toString());
-                                            Log.e("newTag", task.getResult().get("phone").toString());
-                                            phoneNumber = task.getResult().get("phone").toString();
+                                            DocumentSnapshot ds = task.getResult();
+                                            phoneNumber = ds.get("phone").toString();
+                                            emailAddress = ds.get("email").toString();
+                                            if (!showPhone) {
+                                                callImage.setImageResource(R.drawable.ic_call_disabled);
+                                                callImage.setClickable(false);
+                                                callImage.setFocusable(false);
+                                                phoneText.setText("Number isn't shown");
+                                            } else {
+                                                callImage.setImageResource(R.drawable.ic_call);
+                                                callImage.setClickable(true);
+                                                callImage.setFocusable(true);
+                                                phoneText.setText(phoneNumber);
+                                            }
+                                            if (!showMail) {
+                                                emailImage.setImageResource(R.drawable.ic_email_disabled);
+                                                emailImage.setClickable(false);
+                                                emailImage.setFocusable(false);
+                                                emailText.setText("E-mail isn't shown");
+                                            } else {
+                                                emailImage.setImageResource(R.drawable.ic_email);
+                                                emailImage.setClickable(true);
+                                                emailImage.setFocusable(true);
+                                                emailText.setText(emailAddress);
+                                            }
                                         }
                                     });
                         }
                     }
                 });
-
-        viewPager = findViewById(R.id.image_view_pager);
-        imageAdapter = new ImageAdapter(this);
-        viewPager.setAdapter(imageAdapter);
+        setupList(documentID);
     }
 
+    public void setupList(String documentID) {
+        db.collection("images")
+                .document(documentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot ds = task.getResult();
+                            List<String> tempList = (List<String>) ds.get("images");
+
+                            viewPager = findViewById(R.id.image_view_pager);
+                            imageAdapter = new ImageAdapter(AdDetailsActivity.this, tempList);
+                            viewPager.setAdapter(imageAdapter);
+                        }
+                    }
+                });
+    }
 
     private void deleteAd(String documentID) {
         db.collection("ads")
@@ -144,13 +188,13 @@ public class AdDetailsActivity extends AppCompatActivity {
     }
 
     private void setButtonVisibility() {
-        if (!MainActivity.userID.equals(creatorUID)) { // accessed form home fragment
-            CallButton.setVisibility(View.VISIBLE);
-            EMailButton.setVisibility(View.VISIBLE);
+        if (!MainActivity.userID.equals(creatorUID)) { // accessed from home fragment
+            callImage.setVisibility(View.VISIBLE);
+            emailImage.setVisibility(View.VISIBLE);
             DeleteAdButton.setVisibility(View.INVISIBLE);
-        } else { // accessed form my_ads fragment
-            CallButton.setVisibility(View.INVISIBLE);
-            EMailButton.setVisibility(View.INVISIBLE);
+        } else { // accessed from my_ads fragment or ad is created by user
+            callImage.setVisibility(View.INVISIBLE);
+            emailImage.setVisibility(View.INVISIBLE);
             DeleteAdButton.setVisibility(View.VISIBLE);
         }
     }
@@ -165,6 +209,17 @@ public class AdDetailsActivity extends AppCompatActivity {
             String dial = "tel:" + number;
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
         }
+    }
+
+    private void sendEmail() {
+        String recipient = emailAddress;
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, recipient);
+        intent.putExtra(Intent.EXTRA_SUBJECT, Title.getText().toString());
+
+        intent.setType("message/rfc822");
+        startActivity(Intent.createChooser(intent, "Choose an e-mail client"));
     }
 
     @SuppressLint("MissingSuperCall")

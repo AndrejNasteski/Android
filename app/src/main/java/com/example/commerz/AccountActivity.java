@@ -24,7 +24,7 @@ public class AccountActivity extends AppCompatActivity {
         if (tabInt == 0) { // profile
             TabLayout.Tab selected = tabs.getTabAt(0);
             selected.select();
-        } else if (tabInt == 1) { // myy ads
+        } else if (tabInt == 1) { // my ads
             TabLayout.Tab selected = tabs.getTabAt(1);
             selected.select();
         }
