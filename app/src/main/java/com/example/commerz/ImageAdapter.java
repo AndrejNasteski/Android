@@ -42,8 +42,6 @@ public class ImageAdapter extends PagerAdapter {
                 .centerCrop()
                 .into(imageView);
         container.addView(imageView);
-
-
         return imageView;
     }
 

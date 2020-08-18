@@ -24,13 +24,8 @@ public class LoginFragment extends Fragment {
 
     private EditText email;
     private EditText password;
-    private Button login_button;
-    private Button logout_button;
-    private TextView textView;
-
 
     public FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     public LoginFragment() {
     }
@@ -56,11 +51,11 @@ public class LoginFragment extends Fragment {
 
         email = view.findViewById(R.id.edit_text_email);
         password = view.findViewById(R.id.edit_text_password);
-        login_button = view.findViewById(R.id.login_button);
-        logout_button = view.findViewById(R.id.logout_button);
-        textView = view.findViewById(R.id.text_click_login);
+        Button login_button = view.findViewById(R.id.login_button);
+        Button logout_button = view.findViewById(R.id.logout_button);
+        TextView textView = view.findViewById(R.id.text_click_login);
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null)
@@ -92,7 +87,7 @@ public class LoginFragment extends Fragment {
                 mAuth.signOut();
                 MainActivity.userID = null;
                 MainActivity.loggedIn = mAuth.getCurrentUser() != null;
-                Toast.makeText(getContext(), "You are now logged out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "You are now logged out", Toast.LENGTH_LONG).show();
             }
         });
 

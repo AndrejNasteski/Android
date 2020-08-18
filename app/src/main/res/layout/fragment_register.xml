@@ -18,7 +18,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:ems="10"
-            android:hint="E-mail"
+            android:hint="@string/e_mail"
             android:inputType="textEmailAddress"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
@@ -30,7 +30,7 @@
             android:layout_below="@+id/edit_text_email_register"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:hint="Name"
+            android:hint="@string/name"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
 
@@ -41,7 +41,7 @@
             android:layout_below="@id/edit_text_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:hint="Surname"
+            android:hint="@string/surname"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
 
@@ -52,7 +52,7 @@
             android:layout_below="@id/edit_text_surname"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:hint="phone"
+            android:hint="@string/phone"
             android:inputType="phone"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
@@ -64,7 +64,7 @@
             android:layout_below="@+id/enter_phone_number"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:hint="password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
@@ -77,7 +77,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:ems="10"
-            android:hint="confirm password"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
@@ -90,7 +90,10 @@
             android:layout_below="@id/password_register_confirm"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
-            android:text="Register" />
+            android:background="@color/colorPrimary"
+            android:text="@string/register"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/text_click_register"
@@ -101,7 +104,7 @@
             android:layout_marginTop="50dp"
             android:clickable="true"
             android:focusable="true"
-            android:text="Have an account? Login here."
+            android:text="@string/have_an_account_login_here"
             android:textColor="#8C8C8C" />
 
 

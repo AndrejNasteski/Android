@@ -32,16 +32,12 @@ public class RegisterFragment extends Fragment {
     private EditText password;
     private EditText confirmPassword;
     private EditText phone;
-    private Button registerButton;
-    private TextView textClickRegister;
-
 
     private ProgressDialog progressDialog;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
     public RegisterFragment() {
-
     }
 
     public static RegisterFragment newInstance() {
@@ -58,7 +54,7 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         db = FirebaseFirestore.getInstance();
@@ -69,8 +65,8 @@ public class RegisterFragment extends Fragment {
         phone = view.findViewById(R.id.enter_phone_number);
         password = view.findViewById(R.id.password_register);
         confirmPassword = view.findViewById(R.id.password_register_confirm);
-        registerButton = view.findViewById(R.id.button_register);
-        textClickRegister = view.findViewById(R.id.text_click_register);
+        Button registerButton = view.findViewById(R.id.button_register);
+        TextView textClickRegister = view.findViewById(R.id.text_click_register);
         progressDialog = new ProgressDialog(getContext());
 
 
@@ -91,7 +87,6 @@ public class RegisterFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
 

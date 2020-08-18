@@ -59,10 +59,8 @@ public class AdDetailsActivity extends AppCompatActivity {
         callImage = findViewById(R.id.call_image_button);
         emailImage = findViewById(R.id.email_image_button);
 
-
         fromHome = getIntent().getExtras().getString("from").equals("home");
         final String documentID = getIntent().getExtras().getString("documentID"); // Ad ID
-
 
         callImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +68,6 @@ public class AdDetailsActivity extends AppCompatActivity {
                 makePhoneCall();
             }
         });
-
         emailImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,11 +75,10 @@ public class AdDetailsActivity extends AppCompatActivity {
             }
         });
 
-
         DeleteAdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(getApplicationContext())
+                new AlertDialog.Builder(AdDetailsActivity.this)
                         .setTitle("Delete Ad")
                         .setMessage("Do you want to delete this ad?")
                         .setPositiveButton(android.R.string.yes,
@@ -100,6 +96,7 @@ public class AdDetailsActivity extends AppCompatActivity {
                 .document(documentID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         Ad temp = task.getResult().toObject(Ad.class);
@@ -111,8 +108,6 @@ public class AdDetailsActivity extends AppCompatActivity {
                         Category.setText(temp.getCategory());
                         showMail = temp.getShowMail();
                         showPhone = temp.getShowPhone();
-                        phoneText.setText("Number isn't shown");
-                        emailText.setText("E-mail isn't shown");
                         setButtonVisibility();
                         if (fromHome && !temp.getCreatorUID().equals(MainActivity.userID)) { // user created Ad
                             db.collection("users")

@@ -28,11 +28,8 @@ public class ProfileFragment extends Fragment {
     private EditText name;
     private EditText surname;
     private EditText phone;
-    private Button editButton;
-    private Button saveButton;
 
     private FirebaseFirestore db;
-
 
     public ProfileFragment() {
     }
@@ -40,7 +37,6 @@ public class ProfileFragment extends Fragment {
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,9 +56,8 @@ public class ProfileFragment extends Fragment {
         name = view.findViewById(R.id.profile_user_name);
         surname = view.findViewById(R.id.profile_user_surname);
         phone = view.findViewById(R.id.profile_user_phone);
-        editButton = view.findViewById(R.id.profile_button_edit);
-        saveButton = view.findViewById(R.id.profile_button_save);
-
+        Button editButton = view.findViewById(R.id.profile_button_edit);
+        Button saveButton = view.findViewById(R.id.profile_button_save);
 
         db.collection("users")
                 .document(MainActivity.userID)
@@ -79,7 +74,6 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                 });
-
 
         disableButtons();
 

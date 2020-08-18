@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -47,15 +49,10 @@ public class NewAdFragment extends Fragment {
     private EditText Category;
     private CheckBox ShowMail;
     private CheckBox ShowPhone;
-    private Button CreateAd;
     private RadioGroup radioGroup;
-
-    private Button ChooseImages;
-
 
     private ArrayList<Uri> imageURIs;
     private StorageReference storageReference;
-
 
     public NewAdFragment() {
     }
@@ -63,7 +60,6 @@ public class NewAdFragment extends Fragment {
     public static NewAdFragment newInstance() {
         NewAdFragment fragment = new NewAdFragment();
         Bundle args = new Bundle();
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,16 +81,16 @@ public class NewAdFragment extends Fragment {
         StringLocation = view.findViewById(R.id.edit_text_location);
         ShowMail = view.findViewById(R.id.checkbox_mail);
         ShowPhone = view.findViewById(R.id.checkbox_phone);
-        CreateAd = view.findViewById(R.id.create_ad_button);
+        Button createAd = view.findViewById(R.id.create_ad_button);
         radioGroup = view.findViewById(R.id.radio_group_currency);
 
         storageReference = FirebaseStorage.getInstance().getReference("images");
 
-        ChooseImages = view.findViewById(R.id.choose_images_button);
+        Button chooseImages = view.findViewById(R.id.choose_images_button);
         imageURIs = new ArrayList<>();
 
 
-        ChooseImages.setOnClickListener(new View.OnClickListener() {
+        chooseImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFileChooser();
@@ -102,7 +98,7 @@ public class NewAdFragment extends Fragment {
         });
 
 
-        CreateAd.setOnClickListener(new View.OnClickListener() {
+        createAd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(getContext())
@@ -149,7 +145,7 @@ public class NewAdFragment extends Fragment {
             return;
         }
         Ad temp = new Ad(Sdetails, Long.valueOf(Sprice), Scurrency, Scategory, ShowMail.isChecked(),
-                ShowPhone.isChecked(), Slocation, Stitle, MainActivity.userID, new Date());
+                ShowPhone.isChecked(), Slocation, Stitle, MainActivity.userID, new Date(), null);
 
         CollectionReference reference = FirebaseFirestore.getInstance()
                 .collection("ads");
@@ -158,7 +154,10 @@ public class NewAdFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                        uploadFiles(task.getResult().getId());  // ad ID
+                        String uri = uploadFiles(task.getResult().getId());  // ad ID
+                        Map<String, Object> temp = new HashMap<>();
+                        temp.put("imageUri", uri);
+                        task.getResult().update(temp);
                     }
                 });
 
@@ -183,7 +182,7 @@ public class NewAdFragment extends Fragment {
     }
 
 
-    public void uploadFiles(String AdID) {
+    public String uploadFiles(String AdID) { // returns the first image
         if (!imageURIs.isEmpty()) {
             List<String> uriList = new ArrayList<>();
             for (int i = 0; i < imageURIs.size(); i++) {
@@ -198,12 +197,14 @@ public class NewAdFragment extends Fragment {
             FirebaseFirestore.getInstance()
                     .collection("images").document(AdID)
                     .set(tempMap);
-
+            return uriList.get(0);
         } else {
             Toast.makeText(getContext(), "No images were selected", Toast.LENGTH_SHORT).show();
+            return null;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");

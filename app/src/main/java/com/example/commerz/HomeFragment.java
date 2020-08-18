@@ -22,7 +22,6 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private AdCardAdapter adCardAdapter;
 
-
     private String arguments;
 
 
@@ -61,7 +60,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         return view;
     }
 
@@ -94,7 +92,6 @@ public class HomeFragment extends Fragment {
                     .orderBy("title");
         }
 
-
         FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>()
                 .setQuery(query, Ad.class)
                 .build();
@@ -104,22 +101,4 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(adCardAdapter);
     }
-
-    private void searchQuery(String text) {
-        Query q = db.collection("ads")
-                .startAfter(text)
-                .endAt(text + "\uf8ff");
-
-        FirestoreRecyclerOptions<Ad> options = new FirestoreRecyclerOptions.Builder<Ad>()
-                .setQuery(q, Ad.class)
-                .build();
-        adCardAdapter = new AdCardAdapter(options);
-        //mRecyclerView = view.findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(adCardAdapter);
-
-    }
-
-
 }

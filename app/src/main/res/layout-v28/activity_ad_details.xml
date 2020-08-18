@@ -22,7 +22,6 @@
             android:layout_below="@id/image_view_pager"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="Title placeholder"
             android:textColor="@color/colorPrimary"
             android:textSize="30sp" />
 
@@ -33,7 +32,6 @@
             android:layout_below="@id/details_title_text"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="price placeholder"
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
@@ -43,7 +41,6 @@
             android:layout_above="@+id/details_category_text"
             android:layout_below="@id/details_price_text"
             android:layout_margin="10dp"
-            android:text="Details placeholder"
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
@@ -53,7 +50,6 @@
             android:layout_above="@id/details_location_text"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Category placeholder"
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
@@ -63,7 +59,6 @@
             android:layout_above="@id/details_phone_number"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Location placeholder"
             android:textColor="@color/colorPrimaryDark" />
 
 
@@ -74,7 +69,6 @@
             android:layout_above="@+id/call_image_button"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Phone number placeholder"
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
@@ -85,7 +79,6 @@
             android:layout_alignStart="@+id/email_image_button"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:text="E-mail placeholder"
             android:textColor="@color/colorPrimaryDark" />
 
         <ImageView
@@ -124,7 +117,10 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:text="Delete ad"
+            android:background="@color/colorPrimary"
+            android:text="@string/delete_ad"
+            android:textColor="#ffff"
+            android:textStyle="bold"
             android:visibility="gone" />
 
     </RelativeLayout>

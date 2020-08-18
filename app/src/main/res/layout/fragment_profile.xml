@@ -58,8 +58,11 @@
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="150dp"
+            android:background="@color/colorPrimary"
             android:clickable="false"
-            android:text="Save Changes" />
+            android:text="@string/save_changes"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/profile_button_edit"
@@ -71,7 +74,10 @@
             android:layout_marginTop="150dp"
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
-            android:text="Edit profile" />
+            android:background="@color/colorPrimary"
+            android:text="@string/edit_profile"
+            android:textColor="#ffff"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

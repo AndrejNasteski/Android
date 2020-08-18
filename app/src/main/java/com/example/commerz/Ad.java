@@ -17,13 +17,13 @@ public class Ad {
     private String creatorUID;
     private Date dateCreated;
     private String currency;
+    private String imageUri;
 
     public Ad() {
-
     }
 
     public Ad(String details, Long price, String currency, String category, Boolean showMail, Boolean showPhone,
-              String stringLocation, String title, String creatorUID, Date dateCreated) {
+              String stringLocation, String title, String creatorUID, Date dateCreated, String imageUri) {
         this.currency = currency;
         this.category = category;
         this.title = title;
@@ -34,8 +34,12 @@ public class Ad {
         this.showPhone = showPhone;
         this.creatorUID = creatorUID;
         this.dateCreated = dateCreated;
+        this.imageUri = imageUri;
     }
 
+    public String getImageUri() {
+        return imageUri;
+    }
 
     public String getTitle() {
         return title;
