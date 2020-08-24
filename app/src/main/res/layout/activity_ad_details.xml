@@ -13,7 +13,7 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/image_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="420dp" />
+            android:layout_height="380dp" />
 
         <TextView
             android:id="@+id/details_title_text"
@@ -39,7 +39,7 @@
         <TextView
             android:id="@+id/details_details_text"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/details_category_text"
             android:layout_below="@id/details_price_text"
             android:layout_margin="10dp"

@@ -15,7 +15,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:hint="@string/title"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/edit_text_title"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:ems="10"
             android:gravity="start|top"
             android:hint="@string/details_about_the_ad"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/edit_text_details"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/price"
             android:inputType="number"
             android:shadowColor="@color/colorPrimary"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/radio_group_currency"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/location"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/edit_text_location"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:hint="@string/category"
             android:shadowColor="@color/colorPrimary"
             android:textColor="@color/colorPrimary" />
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/edit_text_price"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <RadioButton
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/edit_text_category"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:text="@string/show_e_mail_on_this_ad"
             android:textColor="@color/colorPrimaryDark" />
 
@@ -145,7 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="20dp"
             android:background="@color/colorPrimary"
             android:text="@string/create_ad"
             android:textColor="#ffff"
